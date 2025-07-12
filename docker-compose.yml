@@ -1,0 +1,72 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: url-shortener-frontend
+    ports:
+      - "${NEXT_PUBLIC_FRONTEND_PORT:-4000}:${NEXT_PUBLIC_FRONTEND_PORT:-4000}"
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - NEXT_PUBLIC_API_URL=http://localhost:${BACKEND_PORT:-3005}
+      - NEXT_PUBLIC_FRONTEND_PORT=${NEXT_PUBLIC_FRONTEND_PORT:-4000}
+      - NEXT_PUBLIC_BACKEND_API_URL=${NEXT_PUBLIC_BACKEND_API_URL:-http://localhost:3005/api}
+      - PORT=${NEXT_PUBLIC_FRONTEND_PORT:-4000}
+      - SERVER_API_URL=${SERVER_API_URL:-http://backend:3005/api}
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    networks:
+      - url-shortener-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: url-shortener-backend
+    ports:
+      - "${BACKEND_PORT:-3005}:${BACKEND_PORT:-3005}"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@database:5432/${POSTGRES_DB:-url_shortener}
+      - BACKEND_PORT=${BACKEND_PORT:-3005}
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/generated
+      - /usr/src/app/node_modules
+      - ./backend/prisma/migrations:/usr/src/app/prisma/migrations
+    networks:
+      - url-shortener-network
+
+  database:
+    image: postgres:17-alpine
+    container_name: url-shortener-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-url_shortener}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DATABASE_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - url-shortener-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  url-shortener-network:
+    driver: bridge

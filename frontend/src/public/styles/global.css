@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+:root {
+  --dark-bg-gradient: 90deg, #0F031A 0%, #090515 100%;
+  --light-bg-gradient: 90deg, #F7F5FD 0%, #FFF 100%;
+  --light-bg: #fff;
+  --link-color: #DED5F6;
+  --txt-white: #EBEBEE;
+  --txt-black: #333755;
+  --txt-gray-dark: #999BAA;
+  --txt-gray-light: #5C5F77;
+  --font-inter: 'Inter', sans-serif
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  /* Beautiful gradient background that complements our header */
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #fce7f3 75%, #fdf2f8 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+/* Prevent layout shifts */
+* {
+  box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced backdrop blur support */
+@supports (backdrop-filter: blur(20px)) {
+  .backdrop-blur-3xl {
+    backdrop-filter: blur(20px);
+  }
+}
