@@ -2,6 +2,11 @@
 
 A full-stack URL shortener application built with Next.js for the frontend and NestJS for the backend, utilizing PostgreSQL as the database and Docker for containerization.
 
+<img width="1703" height="865" alt="Screenshot 2025-07-12 at 20 48 29" src="https://github.com/user-attachments/assets/4646c8b6-d311-46cb-9340-269501b2e48c" />
+<img width="1674" height="856" alt="Screenshot 2025-07-12 at 20 50 51" src="https://github.com/user-attachments/assets/326b73da-4829-4a8f-b477-34a0a1607116" />
+<img width="1690" height="859" alt="Screenshot 2025-07-12 at 20 51 06" src="https://github.com/user-attachments/assets/aa291f3b-a580-4dd2-ab5f-f3417c81d83c" />
+<img width="1668" height="859" alt="Screenshot 2025-07-12 at 20 51 15" src="https://github.com/user-attachments/assets/5982c7c7-4591-4feb-afed-192aa42a6a26" />
+
 ## Prerequisites
 
 Make sure you have the following installed on your system:
